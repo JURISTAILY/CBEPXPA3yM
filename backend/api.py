@@ -30,7 +30,7 @@ def get_result(task_id):
     return jsonify(task_id=task.id, state=task.state, result=result)
 
 
-@app.route('/start')
+@app.route('/start', methods=['POST'])
 def start_task():
     picture_id = str(uuid.uuid4())
     assert len(request.files) == 1
