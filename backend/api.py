@@ -1,9 +1,11 @@
 import os
+import uuid
 import logging.config
 
 from celery import Celery
-from flask import Flask, url_for, redirect, jsonify
+from flask import Flask, url_for, redirect, jsonify, request
 from flask_cors import CORS
+import arrow
 
 app = Flask(__name__)
 app.config.from_object('settings')
@@ -14,21 +16,26 @@ celery = Celery(app.import_name, config_source=app.config['CELERY_SETTINGS'])
 
 
 @celery.task
-def find_phonenumbers():
-    raise NotImplementedError
+def find_phonenumbers(self, picture_id):
+    started = arrow.now()
+    # TODO: Do the picture processing here.
+    elapsed = (arrow.now() - started).total_seconds()
+    return {'picture_id': picture_id, 'time_started': str(started),
+            'time_finished': str(arrow.now()), 'time_elapsed': elapsed}
 
 
 @app.route('/result/<str:task_id>')
 def get_result(task_id):
-    result = celery.AsyncResult(task_id)
-    if result.ready() and result.successful():
-        data = result.result
-    else:
-        data = None
-    return jsonify(task_id=task_id, status=result.state, result=data)
+    task = celery.AsyncResult(task_id)
+    result = task.result if task.ready() and task.successful() else None
+    return jsonify(task_id=task.id, state=task.state, result=result)
 
 
 @app.route('/start')
 def start_task():
-    task = find_phonenumbers.delay()
+    picture_id = str(uuid.uuid4())
+    assert len(request.files) == 1
+    # TODO: Save picture to permanent database here.
+    task = find_phonenumbers.apply_async((picture_id,), task_id=picture_id)
+    assert task.id == picture_id
     return redirect(url_for('get_result', task_id=task.id))
