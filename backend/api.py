@@ -1,6 +1,7 @@
 import os
 import uuid
 import logging.config
+import time
 from datetime import datetime
 
 from celery import Celery
@@ -9,16 +10,19 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 app.config.from_object('settings')
+
 os.makedirs(app.config['DATA_DIR'], exist_ok=True)
+
 logging.config.dictConfig(app.config['LOGGING_CONFIG'])
 cors = CORS(app, resources={'*': {'origins': '*'}})
 celery = Celery(app.import_name, config_source=app.config['CELERY_SETTINGS'])
 
 
 @celery.task
-def find_phonenumbers(self, picture_id):
+def find_phonenumbers(picture_id):
     started = datetime.utcnow()
     # TODO: Do the picture processing here.
+    time.sleep(10)
     elapsed = (datetime.utcnow() - started).total_seconds()
     return {'picture_id': picture_id, 'time_elapsed': elapsed}
 
