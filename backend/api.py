@@ -23,7 +23,7 @@ def find_phonenumbers(self, picture_id):
     return {'picture_id': picture_id, 'time_elapsed': elapsed}
 
 
-@app.route('/result/<str:task_id>')
+@app.route('/result/<task_id>')
 def get_result(task_id):
     task = celery.AsyncResult(task_id)
     result = task.result if task.ready() and task.successful() else None
