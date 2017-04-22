@@ -5,7 +5,7 @@ JSON_AS_ASCII = False
 PROJECT_DIR = dirname(realpath(__file__))
 DATA_DIR = join(PROJECT_DIR, 'data')
 
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + join(DATA_DIR, 'results.db')
+SQLALCHEMY_DATABASE_URI = ''
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 CELERY_SETTINGS = {

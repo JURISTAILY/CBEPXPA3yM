@@ -9,11 +9,13 @@ billiard==3.5.0.2         # via celery
 celery==4.0.2
 click==6.7                # via flask
 flask-cors==3.0.2
+flask-sqlalchemy==2.2
 flask==0.12.1
 itsdangerous==0.24        # via flask
 jinja2==2.9.6             # via flask
 kombu==4.0.2              # via celery
 markupsafe==1.0           # via jinja2
+psycopg2==2.7.1
 pytz==2017.2              # via celery
 six==1.10.0               # via flask-cors
 sqlalchemy==1.1.8
