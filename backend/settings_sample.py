@@ -1,6 +1,10 @@
 from os.path import join, dirname, realpath
 
-JSON_AS_ASCII = False
+RESTFUL_JSON = {
+    'ensure_ascii': False,
+    'sort_keys': True,
+    'indent': 4,
+}
 
 PROJECT_DIR = dirname(realpath(__file__))
 DATA_DIR = join(PROJECT_DIR, 'data')

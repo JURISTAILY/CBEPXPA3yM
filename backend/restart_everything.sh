@@ -1,12 +1,13 @@
-PROJECT="/var/www/callsense"
-CELERY_LOG="$PROJECT/data/celery.log"
+PROJECT=/var/www/callsense
+USER=www-data
 
 cd $PROJECT
 
-chown -R www-data:www-data .
+chown -R $USER:$USER .
 
 service uwsgi_callsense restart
+service nginx reload
 
-ps auxww | grep 'celery worker' | grep $CELERY_LOG | grep -v grep | awk '{print $2}' | xargs -r kill -9
+ps auxww | grep 'celery worker' | grep -v grep | awk '{print $2}' | xargs -r kill -9
 rm celeryd.pid
-celery -A api.celery worker -D -l INFO -f $CELERY_LOG --uid=www-data
+celery -A api.celery worker -D -l INFO -f $PROJECT/data/celery.log --uid=$USER
