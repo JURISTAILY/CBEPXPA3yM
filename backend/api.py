@@ -14,7 +14,7 @@ app.config.from_object('settings')
 
 os.makedirs(app.config['DATA_DIR'], exist_ok=True)
 
-logging.config.dictConfig(app.config['LOGGING_CONFIG'])
+logging.config.dictConfig(app.config['LOGGING'])
 cors = CORS(app, resources={'*': {'origins': '*'}})
 celery = Celery(app.import_name, config_source=app.config['CELERY_SETTINGS'])
 api = Api(app)

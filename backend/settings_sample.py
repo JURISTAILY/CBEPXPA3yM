@@ -24,7 +24,7 @@ CELERY_SETTINGS = {
 
 LOGGER_NAME = 'autodial'
 
-LOGGING_CONFIG = {
+LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
